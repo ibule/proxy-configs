@@ -12,13 +12,8 @@ DOMAIN-SUFFIX,byffbb.com
 DOMAIN-SUFFIX,byapps.net
 DOMAIN-SUFFIX,bytick.com
 DOMAIN-SUFFIX,bybit-exchange.github.io
-# Bybit app obfuscated API, WebSocket and telemetry domains observed in logs
+# Bybit app obfuscated API, WebSocket and telemetry domains observed in logs; shared Google/Amazon/Appsflyer domains intentionally excluded
 DOMAIN-SUFFIX,byabcde.com
 DOMAIN-SUFFIX,ng-dex.com
 DOMAIN-SUFFIX,wsot2022.com
 DOMAIN-SUFFIX,ffbbbdc6d3c353211fe2ba39c9f744cd.com
-DOMAIN,m3ond3-launches.appsflyersdk.com
-DOMAIN,m3ond3-inapps.appsflyersdk.com
-DOMAIN,firebaselogging-pa.googleapis.com
-DOMAIN,app-analytics-services.com
-DOMAIN,s3.ap-southeast-1.amazonaws.com
