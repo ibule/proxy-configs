@@ -1,0 +1,8 @@
+# Tiger Brokers / 老虎证券
+# 仅包含老虎证券自有域名，避免把通用 CDN、统计服务误分流。
+DOMAIN-SUFFIX,tigerbrokers.com
+DOMAIN-SUFFIX,tigerbrokers.com.hk
+DOMAIN-SUFFIX,tigerbrokers.com.sg
+DOMAIN-SUFFIX,tigerbrokers.com.au
+DOMAIN-SUFFIX,itiger.com
+DOMAIN-SUFFIX,tigerfintech.com
