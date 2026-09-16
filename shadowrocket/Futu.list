@@ -1,7 +1,10 @@
 # NAME: Futu
 # DESC: Futu and Moomoo related domain suffix rules
 # SOURCE: Extracted and scoped from blackmatrix7/ios_rule_script issue #1687
-# UPDATED: 2026-06-13
+# SOURCE: https://github.com/v2fly/domain-list-community/blob/master/data/futu
+# SOURCE: https://www.moomoo.com/community/feed/106418952929285 (futusg.com help center)
+# UPDATED: 2026-09-16
+# Domain membership is based on public sources, not a complete app traffic capture.
 
 # Futu - core domains
 DOMAIN-SUFFIX,futu.link
@@ -26,6 +29,7 @@ DOMAIN-SUFFIX,futuau.com
 DOMAIN-SUFFIX,futuesop.com
 DOMAIN-SUFFIX,futufin.com
 DOMAIN-SUFFIX,futuhk.com
+DOMAIN-SUFFIX,futuhk1.com
 DOMAIN-SUFFIX,futuhk2.com
 DOMAIN-SUFFIX,futuhkapp.com
 DOMAIN-SUFFIX,futuhn.com
@@ -34,6 +38,8 @@ DOMAIN-SUFFIX,futuinc.com
 DOMAIN-SUFFIX,futuniuniu.com
 DOMAIN-SUFFIX,futubull.cn
 DOMAIN-SUFFIX,futuchain.com
+DOMAIN-SUFFIX,futuoa.com
+DOMAIN-SUFFIX,futusg.com
 DOMAIN-SUFFIX,futustatic.com
 DOMAIN-SUFFIX,fututrade.com
 DOMAIN-SUFFIX,fututrustee.com
