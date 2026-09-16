@@ -1,8 +1,31 @@
-# Tiger Brokers / 老虎证券
-# 仅包含老虎证券自有域名，避免把通用 CDN、统计服务误分流。
+# NAME: Tiger
+# GENERATED: scripts/sync_broker_rules.py; edit rules/local/*.list instead.
+# SOURCE: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/TigerFintech/TigerFintech.list
+# UPSTREAM LICENSE: GPL-2.0 (see licenses/blackmatrix7-ios_rule_script.txt)
+# LOCAL: rules/local/tiger.list
+# MODIFIED: normalized, merged and filtered; change dates are recorded in git history.
+# Public rule sources; not a complete app traffic capture.
+# TOTAL: 22
+
+DOMAIN-SUFFIX,ftfast.com
+DOMAIN-SUFFIX,iotaskyt.com
+DOMAIN-SUFFIX,iotaskyty.com
+DOMAIN-SUFFIX,itiger.com
+DOMAIN-SUFFIX,itigergrowtha.com
+DOMAIN-SUFFIX,itigerup.com
+DOMAIN-SUFFIX,laohu8.com
+DOMAIN-SUFFIX,skytigris.cn
+DOMAIN-SUFFIX,tbdesk.com
+DOMAIN-SUFFIX,tigerbbs.cn
+DOMAIN-SUFFIX,tigerbbs.com
 DOMAIN-SUFFIX,tigerbrokers.com
+DOMAIN-SUFFIX,tigerbrokers.com.au
 DOMAIN-SUFFIX,tigerbrokers.com.hk
 DOMAIN-SUFFIX,tigerbrokers.com.sg
-DOMAIN-SUFFIX,tigerbrokers.com.au
-DOMAIN-SUFFIX,itiger.com
+DOMAIN-SUFFIX,tigerbrokers.net
 DOMAIN-SUFFIX,tigerfintech.com
+DOMAIN-SUFFIX,tigertcp.cn
+DOMAIN-SUFFIX,tigr.link
+DOMAIN-SUFFIX,xiaohu8.com
+DOMAIN-SUFFIX,zhijianfengyi.cn
+DOMAIN-SUFFIX,zhijianfengyi.com

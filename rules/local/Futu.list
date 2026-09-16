@@ -1,0 +1,18 @@
+# 本项目手动补充项；上游已有域名由同步脚本管理。
+# 来源：原 shadowrocket/Futu.list，blackmatrix7/ios_rule_script issue #1687。
+# https://github.com/blackmatrix7/ios_rule_script/issues/1687
+DOMAIN-SUFFIX,futu.com
+DOMAIN-SUFFIX,futu0.com
+DOMAIN-SUFFIX,futu1.com
+DOMAIN-SUFFIX,futu2.com
+DOMAIN-SUFFIX,futu3.com
+DOMAIN-SUFFIX,futu4.com
+DOMAIN-SUFFIX,futu6.com
+DOMAIN-SUFFIX,futu7.com
+DOMAIN-SUFFIX,futu8.com
+DOMAIN-SUFFIX,futu9.com
+DOMAIN-SUFFIX,futuinc.com
+DOMAIN-SUFFIX,futubull.cn
+DOMAIN-SUFFIX,futuchain.com
+DOMAIN-SUFFIX,fututrustee.com
+DOMAIN-SUFFIX,api.moomoobull.com

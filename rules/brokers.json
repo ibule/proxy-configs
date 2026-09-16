@@ -1,0 +1,31 @@
+{
+  "exclude_suffixes": [
+    "futuapi.com",
+    "qtlcdn.com",
+    "play-analytics.com",
+    "appsflyersdk.com",
+    "qcloud.com"
+  ],
+  "brokers": [
+    {
+      "name": "Futu",
+      "url": "https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/futu",
+      "format": "v2fly",
+      "license": "MIT (see licenses/v2fly-domain-list-community.txt)",
+      "local": "rules/local/Futu.list",
+      "output": "shadowrocket/Futu.list",
+      "min_rules": 10,
+      "required": ["DOMAIN-SUFFIX,futunn.com", "DOMAIN-SUFFIX,futuhk.com", "DOMAIN-SUFFIX,moomoo.com"]
+    },
+    {
+      "name": "Tiger",
+      "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/TigerFintech/TigerFintech.list",
+      "format": "shadowrocket",
+      "license": "GPL-2.0 (see licenses/blackmatrix7-ios_rule_script.txt)",
+      "local": "rules/local/tiger.list",
+      "output": "shadowrocket/tiger.list",
+      "min_rules": 8,
+      "required": ["DOMAIN-SUFFIX,itiger.com", "DOMAIN-SUFFIX,tigerfintech.com"]
+    }
+  ]
+}

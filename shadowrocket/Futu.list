@@ -1,18 +1,16 @@
 # NAME: Futu
-# DESC: Futu and Moomoo related domain suffix rules
-# SOURCE: Extracted and scoped from blackmatrix7/ios_rule_script issue #1687
-# SOURCE: https://github.com/v2fly/domain-list-community/blob/master/data/futu
-# SOURCE: https://www.moomoo.com/community/feed/106418952929285 (futusg.com help center)
-# UPDATED: 2026-09-16
-# Domain membership is based on public sources, not a complete app traffic capture.
+# GENERATED: scripts/sync_broker_rules.py; edit rules/local/*.list instead.
+# SOURCE: https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/futu
+# UPSTREAM LICENSE: MIT (see licenses/v2fly-domain-list-community.txt)
+# LOCAL: rules/local/Futu.list
+# MODIFIED: normalized, merged and filtered; change dates are recorded in git history.
+# Public rule sources; not a complete app traffic capture.
+# TOTAL: 36
 
-# Futu - core domains
-DOMAIN-SUFFIX,futu.link
-DOMAIN-SUFFIX,futu.com
+DOMAIN-SUFFIX,api.moomoobull.com
 DOMAIN-SUFFIX,futu.cn
-DOMAIN-SUFFIX,futunn.com
-
-# Futu - numbered and backup domains
+DOMAIN-SUFFIX,futu.com
+DOMAIN-SUFFIX,futu.link
 DOMAIN-SUFFIX,futu0.com
 DOMAIN-SUFFIX,futu1.com
 DOMAIN-SUFFIX,futu2.com
@@ -23,9 +21,9 @@ DOMAIN-SUFFIX,futu6.com
 DOMAIN-SUFFIX,futu7.com
 DOMAIN-SUFFIX,futu8.com
 DOMAIN-SUFFIX,futu9.com
-
-# Futu - regional, business, trading, and static assets
 DOMAIN-SUFFIX,futuau.com
+DOMAIN-SUFFIX,futubull.cn
+DOMAIN-SUFFIX,futuchain.com
 DOMAIN-SUFFIX,futuesop.com
 DOMAIN-SUFFIX,futufin.com
 DOMAIN-SUFFIX,futuhk.com
@@ -36,16 +34,12 @@ DOMAIN-SUFFIX,futuhn.com
 DOMAIN-SUFFIX,futuholdings.com
 DOMAIN-SUFFIX,futuinc.com
 DOMAIN-SUFFIX,futuniuniu.com
-DOMAIN-SUFFIX,futubull.cn
-DOMAIN-SUFFIX,futuchain.com
+DOMAIN-SUFFIX,futunn.com
 DOMAIN-SUFFIX,futuoa.com
 DOMAIN-SUFFIX,futusg.com
 DOMAIN-SUFFIX,futustatic.com
 DOMAIN-SUFFIX,fututrade.com
 DOMAIN-SUFFIX,fututrustee.com
-
-# Moomoo - app and account services
 DOMAIN-SUFFIX,moomoo.com
-DOMAIN-SUFFIX,api.moomoobull.com
 DOMAIN-SUFFIX,moomooequity.com
 DOMAIN-SUFFIX,moomootrustee.com
