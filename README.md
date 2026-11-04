@@ -2,22 +2,23 @@
 
 Shadowrocket 配置与规则集，入口为 `shadowrocket/main.conf`。
 
-## 富途、老虎规则自动更新
+## 富途、老虎、长桥规则自动更新
 
 GitHub Actions 工作流 **Sync broker rules** 每天北京时间 **10:23** 拉取上游，有变更时自动提交至默认分支。也可以在仓库 **Actions → Sync broker rules → Run workflow** 手动触发，选择默认分支。修改同步脚本、来源配置或本地补充规则并推送至 `main` 后也会触发。
 
 | 输出文件 | 上游 | 本地补充 |
 | --- | --- | --- |
 | `shadowrocket/Futu.list` | [v2fly/domain-list-community · futu](https://github.com/v2fly/domain-list-community/blob/master/data/futu) | `rules/local/Futu.list` |
+| `shadowrocket/Longbridge.list` | [v2fly/domain-list-community · longbridge](https://github.com/v2fly/domain-list-community/blob/master/data/longbridge) | `rules/local/Longbridge.list` |
 | `shadowrocket/tiger.list` | [blackmatrix7/ios_rule_script · TigerFintech](https://github.com/blackmatrix7/ios_rule_script/blob/master/rule/Shadowrocket/TigerFintech/TigerFintech.list) | `rules/local/tiger.list` |
 
-这两个输出文件由脚本生成。需要永久保留的自定义域名请加入对应的 `rules/local/*.list`；需要排除的域名请加入 `rules/brokers.json` 的 `exclude_suffixes`，同时排除其子域名。初次迁移保留了项目原有规则。
+这些输出文件由脚本生成。需要永久保留的自定义域名请加入对应的 `rules/local/*.list`；需要排除的域名请加入 `rules/brokers.json` 的 `exclude_suffixes`，同时排除其子域名。初次迁移保留了项目原有规则。
 
 同步会排序、去重，并保留上游的精确域名或后缀匹配语义。只有域名规则会被接受；上游新增 IP、正则或 include 等尚未支持的语法时会报错，需检查后调整脚本。当前排除共享统计/CDN 域名及已核实的非官方 `futuapi.com`。
 
 下载失败、空内容、格式错误、核心域名缺失、上游条目过少/超过 500 条，或一次删除超过现有规则的 25%，都会中止同步。所有来源验证成功后才写入输出文件。正常的上游删除会同步生效，但本地补充项会继续保留。没有内容变化时不会产生提交。
 
-`Futu_Extended.list` 中的共享服务及 IP 网段继续手动维护；本工作流仅自动同步上表的域名集。`main.conf` 已引用两个输出文件并指向「港股APP」，引用地址保持不变。
+`Futu_Extended.list` 中的共享服务及 IP 网段继续手动维护；本工作流仅自动同步上表的域名集。券商规则集由模块 `shadowrocket/Broker.module` 引用并指向「港股APP」，`main.conf` 不再直接引用。在 Shadowrocket「配置 → 模块」中添加 `https://raw.githubusercontent.com/ibule/proxy-configs/main/shadowrocket/Broker.module` 即可开关。
 
 ### 启用
 

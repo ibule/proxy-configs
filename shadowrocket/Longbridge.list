@@ -1,0 +1,21 @@
+# NAME: Longbridge
+# GENERATED: scripts/sync_broker_rules.py; edit rules/local/*.list instead.
+# SOURCE: https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/longbridge
+# UPSTREAM LICENSE: MIT (see licenses/v2fly-domain-list-community.txt)
+# LOCAL: rules/local/Longbridge.list
+# MODIFIED: normalized, merged and filtered; change dates are recorded in git history.
+# Public rule sources; not a complete app traffic capture.
+# TOTAL: 12
+
+DOMAIN-SUFFIX,lbctrl.com
+DOMAIN-SUFFIX,lbkrs.com
+DOMAIN-SUFFIX,longbridge.cloud
+DOMAIN-SUFFIX,longbridge.cn
+DOMAIN-SUFFIX,longbridge.com
+DOMAIN-SUFFIX,longbridge.global
+DOMAIN-SUFFIX,longbridge.hk
+DOMAIN-SUFFIX,longbridge.sg
+DOMAIN-SUFFIX,longbridgeapp.com
+DOMAIN-SUFFIX,longbridgehk.com
+DOMAIN-SUFFIX,longportapp.com
+DOMAIN-SUFFIX,wbrks.com

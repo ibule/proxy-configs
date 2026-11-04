@@ -1,0 +1,12 @@
+#!name=港股券商分流
+#!desc=富途牛牛 / moomoo、老虎证券、长桥分流到「港股APP」策略组
+#!category=Finance
+
+[Rule]
+# 富途牛牛 / moomoo
+RULE-SET,https://raw.githubusercontent.com/ibule/proxy-configs/main/shadowrocket/Futu.list,港股APP
+RULE-SET,https://raw.githubusercontent.com/ibule/proxy-configs/main/shadowrocket/Futu_Extended.list,港股APP
+# 老虎证券
+RULE-SET,https://raw.githubusercontent.com/ibule/proxy-configs/main/shadowrocket/tiger.list,港股APP
+# 长桥 Longbridge
+RULE-SET,https://raw.githubusercontent.com/ibule/proxy-configs/main/shadowrocket/Longbridge.list,港股APP

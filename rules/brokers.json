@@ -15,7 +15,11 @@
       "local": "rules/local/Futu.list",
       "output": "shadowrocket/Futu.list",
       "min_rules": 10,
-      "required": ["DOMAIN-SUFFIX,futunn.com", "DOMAIN-SUFFIX,futuhk.com", "DOMAIN-SUFFIX,moomoo.com"]
+      "required": [
+        "DOMAIN-SUFFIX,futunn.com",
+        "DOMAIN-SUFFIX,futuhk.com",
+        "DOMAIN-SUFFIX,moomoo.com"
+      ]
     },
     {
       "name": "Tiger",
@@ -25,7 +29,23 @@
       "local": "rules/local/tiger.list",
       "output": "shadowrocket/tiger.list",
       "min_rules": 8,
-      "required": ["DOMAIN-SUFFIX,itiger.com", "DOMAIN-SUFFIX,tigerfintech.com"]
+      "required": [
+        "DOMAIN-SUFFIX,itiger.com",
+        "DOMAIN-SUFFIX,tigerfintech.com"
+      ]
+    },
+    {
+      "name": "Longbridge",
+      "url": "https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/longbridge",
+      "format": "v2fly",
+      "license": "MIT (see licenses/v2fly-domain-list-community.txt)",
+      "local": "rules/local/Longbridge.list",
+      "output": "shadowrocket/Longbridge.list",
+      "min_rules": 5,
+      "required": [
+        "DOMAIN-SUFFIX,longbridge.com",
+        "DOMAIN-SUFFIX,longportapp.com"
+      ]
     }
   ]
 }
