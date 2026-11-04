@@ -1,0 +1,23 @@
+#!name=Apple Intelligence
+#!desc=Apple Intelligence / Siri / Relay 分流，走「AI」策略组（请在组内选支持地区的节点，如美国）
+#!category=Apple
+
+[Rule]
+DOMAIN,guzzoni.apple.com,AI
+DOMAIN-SUFFIX,smoot.apple.com,AI
+DOMAIN,api-siri-prod.apple.com,AI
+DOMAIN,seed.siri.apple.com,AI
+DOMAIN,apple-relay.apple.com,AI
+DOMAIN,apple-relay.cloudflare.com,AI
+DOMAIN,apple-relay.fastly-edge.com,AI
+DOMAIN,cp4.cloudflare.com,AI
+DOMAIN,apple-relay.mask.apple-dns.net,AI
+DOMAIN,mask-api.icloud.com,AI
+DOMAIN,mask-api.fe2.apple-dns.net,AI
+DOMAIN,apple-relay.akamaized.net,AI
+DOMAIN,apple-carry-relay.cloudflare.com,AI
+DOMAIN,gspe1-ssl.ls.apple.com,AI
+DOMAIN,gateway.icloud.com,AI
+DOMAIN,probe.icloud.com,AI
+DOMAIN,metrics.icloud.com,AI
+DOMAIN,wps.apple.com,AI
