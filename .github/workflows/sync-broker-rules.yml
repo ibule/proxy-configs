@@ -12,6 +12,8 @@ on:
       - 'scripts/sync_broker_rules.py'
       - 'tests/**'
       - 'rules/**'
+      - 'shadowrocket/Futu_Extended.list'
+      - 'surge/**'
 
 permissions:
   contents: write
@@ -39,12 +41,12 @@ jobs:
           TARGET_BRANCH: ${{ github.event.repository.default_branch }}
         run: |
           git diff --check
-          git add -- shadowrocket/Futu.list shadowrocket/tiger.list
+          git add -- shadowrocket/Futu.list shadowrocket/Longbridge.list shadowrocket/tiger.list surge/HK-Stocks.list
           if git diff --cached --quiet; then
             echo "No rule changes."
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git commit -m 'chore: sync Futu and Tiger broker rules'
+          git commit -m 'chore: sync broker rules and Surge HK-Stocks list'
           git push origin "HEAD:$TARGET_BRANCH"

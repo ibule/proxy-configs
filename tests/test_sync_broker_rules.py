@@ -5,7 +5,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from scripts.sync_broker_rules import parse_rules, sync
+from scripts.sync_broker_rules import parse_extended, parse_rules, render_surge, sync
 
 
 class ParserTests(unittest.TestCase):
@@ -29,6 +29,24 @@ class ParserTests(unittest.TestCase):
         for text, format_name in cases:
             with self.subTest(text=text), self.assertRaises(ValueError):
                 parse_rules(text, format_name)
+
+    def test_extended_keeps_ipv4_cidr_and_rejects_other_surge_syntax(self):
+        self.assertEqual(
+            parse_extended('# note\nDOMAIN,API.Example.com\nIP-CIDR,10.1.2.0/24,no-resolve\nIP-CIDR,119.91.245.0/23,no-resolve\n'),
+            {'DOMAIN,api.example.com', 'IP-CIDR,10.1.2.0/24,no-resolve', 'IP-CIDR,119.91.245.0/23,no-resolve'},
+        )
+        cases = [
+            'DOMAIN-KEYWORD,example',
+            'IP-CIDR,10.0.0.0/8',
+            'IP-CIDR,10.0.0.0/8,DIRECT',
+            'IP-CIDR,10.0.0.0/33,no-resolve',
+            'IP-CIDR,10.0.0.0/08,no-resolve',
+            'IP-CIDR6,2001:db8::/32,no-resolve',
+            'DOMAIN-SUFFIX,example.com,港股APP',
+        ]
+        for text in cases:
+            with self.subTest(text=text), self.assertRaises(ValueError):
+                parse_extended(text)
 
 
 class SyncTests(unittest.TestCase):
@@ -113,6 +131,118 @@ class SyncTests(unittest.TestCase):
         self.write_config()
         with self.assertRaisesRegex(ValueError, 'exclusions removed core'):
             self.run_sync()
+
+    def enable_surge(self):
+        self.config['surge'] = {
+            'name': 'HK-Stocks',
+            'output': 'surge/HK-Stocks.list',
+            'extended': 'shadowrocket/Futu_Extended.list',
+            'description': 'Test Surge rules.',
+            'sources': 'shadowrocket/output.list, shadowrocket/Futu_Extended.list',
+            'license': 'v2fly MIT (see licenses/); blackmatrix7 GPL-2.0 (see licenses/)',
+            'sections': [
+                {'title': 'Futu', 'broker': 'Test'},
+                {'title': 'Futu_Extended', 'extended': True},
+            ],
+        }
+        self.write_config()
+
+    def write_extended(self, text):
+        path = self.root / 'shadowrocket/Futu_Extended.list'
+        path.parent.mkdir(exist_ok=True)
+        path.write_text(text)
+
+    def test_surge_merges_extended_ips_dedupes_and_stays_idempotent(self):
+        self.config['exclude_suffixes'].append('appsflyersdk.com')
+        self.enable_surge()
+        self.write_extended(
+            '# manual ranges\n'
+            'DOMAIN-SUFFIX,local.example\n'
+            'DOMAIN-SUFFIX,9oju31.launches.appsflyersdk.com\n'
+            'IP-CIDR,10.1.2.0/24,no-resolve\n'
+            'IP-CIDR,10.1.2.0/24,no-resolve\n'
+            'IP-CIDR,10.0.0.0/8,no-resolve\n'
+            'DOMAIN,api.extra.example\n'
+        )
+        upstream = 'core.example\nlocal.example\nnew.example\nshared.example\n9oju31.launches.appsflyersdk.com\n'
+        self.assertEqual(self.run_sync(upstream), 0)
+        shadowrocket = self.target.read_text()
+        self.assertNotIn('appsflyersdk.com', shadowrocket)
+        self.assertNotIn('shared.example', shadowrocket)
+        surge_path = self.root / 'surge/HK-Stocks.list'
+        text = surge_path.read_text()
+        self.assertIn('# UPSTREAM LICENSE: v2fly MIT (see licenses/); blackmatrix7 GPL-2.0 (see licenses/)', text)
+        self.assertIn('# SOURCES: shadowrocket/output.list, shadowrocket/Futu_Extended.list', text)
+        self.assertIn('# --- Futu ---', text)
+        self.assertIn('# --- Futu_Extended ---', text)
+        self.assertEqual(text.count('DOMAIN-SUFFIX,local.example\n'), 1)
+        self.assertEqual(text.count('IP-CIDR,10.1.2.0/24,no-resolve\n'), 1)
+        self.assertIn('DOMAIN-SUFFIX,9oju31.launches.appsflyersdk.com\n', text)
+        self.assertIn('DOMAIN,api.extra.example\n', text)
+        self.assertLess(
+            text.index('IP-CIDR,10.0.0.0/8,no-resolve'),
+            text.index('IP-CIDR,10.1.2.0/24,no-resolve'),
+        )
+        self.assertNotIn('shared.example', text)
+        self.assertNotIn('DOMAIN-KEYWORD', text)
+        self.assertIn('# TOTAL: 7', text)
+        stamp = surge_path.stat().st_mtime_ns
+        self.assertEqual(self.run_sync(upstream, check=True), 0)
+        self.run_sync(upstream)
+        self.assertEqual(surge_path.stat().st_mtime_ns, stamp)
+
+    def test_surge_check_and_invalid_extended_do_not_write(self):
+        self.enable_surge()
+        self.write_extended('DOMAIN-KEYWORD,futu\n')
+        old = self.target.read_bytes()
+        with self.assertRaisesRegex(ValueError, 'unsupported Surge rule type'):
+            self.run_sync('core.example\nnew.example\n')
+        self.assertEqual(self.target.read_bytes(), old)
+        self.assertFalse((self.root / 'surge/HK-Stocks.list').exists())
+
+        self.write_extended('IP-CIDR,10.0.0.0/8,no-resolve\n')
+        self.assertEqual(self.run_sync('core.example\nnew.example\n', check=True), 1)
+        self.assertEqual(self.target.read_bytes(), old)
+        self.assertFalse((self.root / 'surge/HK-Stocks.list').exists())
+
+    def test_truncated_extended_list_keeps_previous_files(self):
+        self.enable_surge()
+        self.write_extended(''.join(f'IP-CIDR,10.0.{i}.0/24,no-resolve\n' for i in range(8)) + 'DOMAIN-SUFFIX,extra.example\n')
+        self.run_sync('core.example\n')
+        surge_path = self.root / 'surge/HK-Stocks.list'
+        old_surge = surge_path.read_bytes()
+        old_target = self.target.read_bytes()
+        self.write_extended('IP-CIDR,10.0.0.0/24,no-resolve\n')
+        with self.assertRaisesRegex(ValueError, 'refusing to remove'):
+            self.run_sync('core.example\nadded.example\n')
+        self.assertEqual(surge_path.read_bytes(), old_surge)
+        self.assertEqual(self.target.read_bytes(), old_target)
+
+
+class RepoSurgeTests(unittest.TestCase):
+    def test_hk_stocks_list_matches_shadowrocket_sources(self):
+        root = Path(__file__).resolve().parents[1]
+        config = json.loads((root / 'rules/brokers.json').read_text(encoding='utf-8'))
+        broker_rules = {
+            broker['name']: parse_rules((root / broker['output']).read_text(encoding='utf-8'), 'shadowrocket')
+            for broker in config['brokers']
+        }
+        extended_rules = parse_extended((root / config['surge']['extended']).read_text(encoding='utf-8'))
+        text, rules = render_surge(config, broker_rules, extended_rules)
+        actual = (root / config['surge']['output']).read_text(encoding='utf-8')
+        self.assertEqual(actual, text)
+        self.assertEqual(len(rules), len(broker_rules['Futu'] | broker_rules['Tiger'] | broker_rules['Longbridge'] | extended_rules))
+        for line in actual.splitlines():
+            if not line or line.startswith('#'):
+                continue
+            kind = line.split(',', 1)[0]
+            self.assertIn(kind, {'DOMAIN', 'DOMAIN-SUFFIX', 'IP-CIDR'})
+            if kind == 'IP-CIDR':
+                self.assertTrue(line.endswith(',no-resolve'))
+        self.assertNotIn('DOMAIN-KEYWORD', actual)
+        self.assertIn('v2fly MIT', actual)
+        self.assertIn('blackmatrix7 GPL-2.0', actual)
+        self.assertIn('licenses/', actual)
 
 
 if __name__ == '__main__':

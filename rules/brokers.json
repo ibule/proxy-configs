@@ -47,5 +47,19 @@
         "DOMAIN-SUFFIX,longportapp.com"
       ]
     }
-  ]
+  ],
+  "surge": {
+    "name": "HK-Stocks",
+    "output": "surge/HK-Stocks.list",
+    "extended": "shadowrocket/Futu_Extended.list",
+    "description": "Futu/moomoo, Tiger, and Longbridge rules for Surge RULE-SET. Merged from shadowrocket lists in this repo.",
+    "sources": "shadowrocket/Futu.list, shadowrocket/Futu_Extended.list, shadowrocket/tiger.list, shadowrocket/Longbridge.list",
+    "license": "v2fly MIT (see licenses/v2fly-domain-list-community.txt); blackmatrix7 GPL-2.0 (see licenses/blackmatrix7-ios_rule_script.txt)",
+    "sections": [
+      {"title": "Futu", "broker": "Futu"},
+      {"title": "Futu_Extended", "extended": true},
+      {"title": "tiger", "broker": "Tiger"},
+      {"title": "Longbridge", "broker": "Longbridge"}
+    ]
+  }
 }
