@@ -18,7 +18,9 @@ GitHub Actions 工作流 **Sync broker rules** 每天北京时间 **10:23** 拉�
 
 下载失败、空内容、格式错误、核心域名缺失、上游条目过少/超过 500 条，或一次删除超过现有规则的 25%，都会中止同步。所有来源验证成功后才写入输出文件。正常的上游删除会同步生效，但本地补充项会继续保留。没有内容变化时不会产生提交。
 
-`Futu_Extended.list` 中的共享服务及 IP 网段继续手动维护；本工作流仅自动同步上表的域名集。券商规则集由模块 `shadowrocket/Broker.module` 引用并指向「港股APP」，`main.conf` 不再直接引用。在 Shadowrocket「配置 → 模块」中添加 `https://raw.githubusercontent.com/ibule/proxy-configs/main/shadowrocket/Broker.module` 即可开关。
+`Futu_Extended.list` 中的共享服务及 IP 网段继续手动维护。券商规则集由模块 `shadowrocket/Broker.module` 引用并指向「港股APP」，`main.conf` 不再直接引用。在 Shadowrocket「配置 → 模块」中添加 `https://raw.githubusercontent.com/ibule/proxy-configs/main/shadowrocket/Broker.module` 即可开关。
+
+同一工作流会把上表三份域名列表与 `Futu_Extended.list` 去重合并为 `surge/HK-Stocks.list`。Surge 规则只保留 `DOMAIN`、`DOMAIN-SUFFIX` 和 `IP-CIDR`，IP 规则保留 `no-resolve`。扩展列表为空，或 Surge 规则一次删除超过现有条目的 25% 时，同步中止且不改已有文件。
 
 ### 启用
 
@@ -41,3 +43,13 @@ python3 -B scripts/sync_broker_rules.py
 `--check` 不写文件：无差异返回 0，有差异返回 1，下载或校验失败返回 2。
 
 上游规则的许可分别保存在 `licenses/`：v2fly 为 MIT，blackmatrix7 为 GPL-2.0。生成文件保留来源、许可及修改说明；合并、筛选记录可通过 Git 历史查看。
+
+## Surge
+
+Surge 不读取 Shadowrocket 模块，需要把规则手动加到自己的配置里。在 `[Rule]` 中加入（策略组名可替换）：
+
+```
+RULE-SET,https://raw.githubusercontent.com/ibule/proxy-configs/main/surge/HK-Stocks.list,港股APP,update-interval=86400
+```
+
+Surge 里需要自建名为「港股APP」的策略组。如果不用这个名字，把上面一行里的 `港股APP` 改成自己的策略或策略组。列表不含 MITM、脚本或 `DOMAIN-KEYWORD`。文件头注释保留 v2fly MIT 与 blackmatrix7 GPL-2.0 的来源说明，许可全文见 `licenses/`。
