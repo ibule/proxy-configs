@@ -44,6 +44,30 @@ python3 -B scripts/sync_broker_rules.py
 
 上游规则的许可分别保存在 `licenses/`：v2fly 为 MIT，blackmatrix7 为 GPL-2.0。生成文件保留来源、许可及修改说明；合并、筛选记录可通过 Git 历史查看。
 
+## 去广告模块
+
+广告规则单独做成模块 `shadowrocket/ADBlock.module`，`main.conf` 不引用，按需开关。在 Shadowrocket「配置 → 模块」中添加：
+
+```
+https://raw.githubusercontent.com/ibule/proxy-configs/main/shadowrocket/ADBlock.module
+```
+
+模块引用 `shadowrocket/ADBlock.list`，策略为 `REJECT`。该列表由工作流 **Sync adblock rules** 每天北京时间 **09:17** 从 [Johnshall/Shadowrocket-ADBlock-Rules-Forever](https://github.com/Johnshall/Shadowrocket-ADBlock-Rules-Forever) 的 `sr_ad_only.conf`（上游每天 08:00 重建）转换生成：只保留 `DOMAIN-SUFFIX`、`DOMAIN`、`IP-CIDR`，去掉原策略字段，IP 规则加 `no-resolve`。规则少于 1 万条、超过 20 万条，或一次删除超过 25% 时同步中止，不改已有文件。
+
+模块规则优先于 `main.conf`。如果某个正常功能被误拦，把域名加到 `rules/adblock_exclude.txt`（同时排除子域名），推送后工作流会重新生成列表。
+
+本地运行：
+
+```sh
+python3 -B -m unittest tests.test_sync_adblock_rules -v
+python3 -B scripts/sync_adblock_rules.py --check
+python3 -B scripts/sync_adblock_rules.py
+```
+
+## 国内直连
+
+`main.conf` 在 AI、Siri/苹果及国外服务规则之后，引用 [Loyalsoldier/surge-rules](https://github.com/Loyalsoldier/surge-rules) 的 `direct.txt`（`DOMAIN-SET`）和 blackmatrix7 的 `China.list` 作为国内直连域名集合，让国内域名命中域名规则并用国内 DNS 解析，避免被境外 DNS 解析到海外节点后走代理。
+
 ## Surge
 
 Surge 不读取 Shadowrocket 模块，需要把规则手动加到自己的配置里。在 `[Rule]` 中加入（策略组名可替换）：

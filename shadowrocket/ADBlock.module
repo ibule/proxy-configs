@@ -1,0 +1,6 @@
+#!name=去广告
+#!desc=Johnshall Shadowrocket-ADBlock-Rules-Forever 广告与隐私跟踪域名，每日同步后拒绝连接
+#!category=AdBlock
+
+[Rule]
+RULE-SET,https://raw.githubusercontent.com/ibule/proxy-configs/main/shadowrocket/ADBlock.list,REJECT
